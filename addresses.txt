@@ -2,3 +2,5 @@ Praha
 Kurim
 brno
 bratislava
+ostrava
+kourim
