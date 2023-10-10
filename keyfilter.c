@@ -4,15 +4,15 @@
 #include <string.h>
 
 #define MAX_LINE 102 // 100 characters + \0 + \n
-#define MAX_WORD 100 // 100 characters + \0 + \n
+#define MAX_WORD 100 // 100 characters
 
 /**
  * @brief Determine if new letter is inside of enabled_letters
  *
- * @param letter, which we search for in the provided array
- * @param letters, array of current enabled letters
- * @param letters_count, size of the letters array
- * @return 1 if letter is in the provided array of letters, otherwise 0
+ * @param letter array in which we search for in the provided array
+ * @param letters array of current enabled letters
+ * @param letters_count size of the letters array
+ * @return 0 or 1 if letter is in the provided array of letters
  */
 int is_letter_duplicit(char letter, char letters[], int letters_count) {
   for (int i = 0; i < letters_count; i++) {
@@ -23,6 +23,10 @@ int is_letter_duplicit(char letter, char letters[], int letters_count) {
   return 0;
 }
 
+/**
+ * @param letters array of current enabled letters
+ * @param letters_count size of the letters array
+ */
 void print_ordered_letters(char letters[], int letters_count) {
   // Simple bubble sort
   for (int i = 0; i < letters_count; i++) {
@@ -42,12 +46,21 @@ void print_ordered_letters(char letters[], int letters_count) {
   return;
 }
 
+/**
+ * @param buffer array of letters to capitalize
+ */
 void capitalize_word(char *buffer) {
   for (int i = 0; buffer[i] != '\n'; i++) {
     buffer[i] = toupper(buffer[i]);
   }
 }
 
+/**
+ * @brief Validates user input
+ *
+ * @param input input provided by user
+ * @return 1 (valid) or 0 (not valid)
+ */
 int is_valid_input(char *input) {
   if (strlen(input) > MAX_WORD) {
     printf("100 characters is max!\n");
@@ -83,12 +96,12 @@ int main(int argc, char *argv[]) {
 
   char buf[MAX_LINE];
   while (fgets(buf, sizeof buf, stdin) != NULL) {
-    // Case insesitive word
+    // Case insensitive word
     capitalize_word(buf);
 
     // No argument, we care only about first letters
     if (argc == 1) {
-      // Chech for duplicity
+      // Check for duplicity
       if (!is_letter_duplicit(buf[0], enabled_letters, enabled_letters_count)) {
         enabled_letters[enabled_letters_count] = buf[0];
         enabled_letters_count += 1;
@@ -113,7 +126,7 @@ int main(int argc, char *argv[]) {
                                 enabled_letters_count)) {
 
           // Save the next letter after prefix
-          // if prefix is whole address, we do not want \n
+          // if prefix is whole address, we do not want \n (c c c c \n \0)
           if ((int)strlen(buf) - 1 != user_search_length) {
             enabled_letters[enabled_letters_count] = buf[user_search_length];
             enabled_letters_count += 1;
