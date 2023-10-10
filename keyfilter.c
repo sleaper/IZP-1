@@ -1,4 +1,10 @@
-/// @file keyfilter.
+/**
+ * @file keyfilter.c
+ *
+ * @author  Spac Petr <xspacpe00@stud.fit.vutbr.cz>
+ *
+ */
+
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
