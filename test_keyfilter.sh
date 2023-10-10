@@ -1,4 +1,9 @@
 #!/bin/bash
+#
+# Tests for 1. IZP project [2023]
+# Author: _ramb0_
+# Usage:
+#     ./test_keyfilter.sh
 
 
 # Color codes
@@ -71,13 +76,12 @@ run_test "test_02.txt" "bremen" "Found: BREMEN"
 
 run_test "test_02.txt" "p" "Enable: R"
 
-echo -e "Kurim\nKourim\nRalsko\nJanov\nBudapest\nPrague\nBrunswick\nBritain\nBrazil\nBremen" > test_03.txt
+run_test "test_02.txt" "pr1h" "You can use only characters from alphabet!"
+run_test "test_02.txt" "TOHLEJETESTNASTOCHARAKTERUDLOUHEJRADEKJESTLINAHODOUJSITAMNEUDELALCHYBICKUFRAJEREJUSTASKINGYOUKNOWHEHaaaaaa" "100 characters is max!"
 
-run_test "test_03.txt" "0123" "Wrong argument"
-run_test "test_03.txt" "tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt" "Max 100 characters!"
+echo -e "TohleJeTestNaStoCharakteruDlouhejRadekJestliNahodouJsiTamNeudelalChybickuFrajereJustAskingYouKnowHeh" > test_03.txt
+run_test "test_03.txt" "to" "Found: TOHLEJETESTNASTOCHARAKTERUDLOUHEJRADEKJESTLINAHODOUJSITAMNEUDELALCHYBICKUFRAJEREJUSTASKINGYOUKNOWHEH"
 
 rm test_03.txt
 rm test_02.txt
 rm test_01.txt
-
-

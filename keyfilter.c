@@ -1,9 +1,10 @@
-/// @file keyfilter.c
+/// @file keyfilter.
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
 
-#define MAX_CHAR 102 // 100 characters + \0 + \n
+#define MAX_LINE 102 // 100 characters + \0 + \n
+#define MAX_WORD 100 // 100 characters + \0 + \n
 
 /**
  * @brief Determine if new letter is inside of enabled_letters
@@ -13,7 +14,7 @@
  * @param letters_count, size of the letters array
  * @return 1 if letter is in the provided array of letters, otherwise 0
  */
-int isDuplicit(char letter, char letters[], int letters_count) {
+int is_letter_duplicit(char letter, char letters[], int letters_count) {
   for (int i = 0; i < letters_count; i++) {
     if (letters[i] == letter) {
       return 1;
@@ -41,38 +42,54 @@ void print_ordered_letters(char letters[], int letters_count) {
   return;
 }
 
-void capitalizeWord(char *buffer) {
+void capitalize_word(char *buffer) {
   for (int i = 0; buffer[i] != '\n'; i++) {
     buffer[i] = toupper(buffer[i]);
   }
 }
 
+int is_valid_input(char *input) {
+  if (strlen(input) > MAX_WORD) {
+    printf("100 characters is max!\n");
+    return 0;
+  }
+
+  for (int i = 0; input[i] != '\0'; i++) {
+    if (!isalpha(input[i])) {
+      printf("You can use only characters from alphabet!\n");
+      return 0;
+    }
+  }
+  return 1;
+}
+
 int main(int argc, char *argv[]) {
-  char user_search[MAX_CHAR];
+  char user_search[MAX_LINE];
   int user_search_length = 0;
-  char enabled_letters[MAX_CHAR];
+  char enabled_letters[MAX_LINE];
   int enabled_letters_count = 0;
 
   int prefix_matches = 0;
-  char last_match[MAX_CHAR];
+  char last_match[MAX_LINE];
 
   if (argc == 2) {
-    // TODO: Maybe some input validation?
-    strcpy(user_search, argv[1]);
-    user_search_length = strlen(argv[1]);
-    // printf("User input %s %lu\n", user_search, strlen(argv[1]));
+    if (is_valid_input(argv[1])) {
+      strcpy(user_search, argv[1]);
+      user_search_length = strlen(argv[1]);
+    } else {
+      return 1;
+    }
   }
 
-  char buf[MAX_CHAR];
+  char buf[MAX_LINE];
   while (fgets(buf, sizeof buf, stdin) != NULL) {
-
     // Case insesitive word
-    capitalizeWord(buf);
+    capitalize_word(buf);
 
     // No argument, we care only about first letters
     if (argc == 1) {
       // Chech for duplicity
-      if (!isDuplicit(buf[0], enabled_letters, enabled_letters_count)) {
+      if (!is_letter_duplicit(buf[0], enabled_letters, enabled_letters_count)) {
         enabled_letters[enabled_letters_count] = buf[0];
         enabled_letters_count += 1;
       }
@@ -90,13 +107,17 @@ int main(int argc, char *argv[]) {
         }
       }
 
+      // Is prefix equal to user search?
       if (equal_letters == user_search_length) {
-        if (!isDuplicit(buf[user_search_length], enabled_letters,
-                        enabled_letters_count)) {
+        if (!is_letter_duplicit(buf[user_search_length], enabled_letters,
+                                enabled_letters_count)) {
 
           // Save the next letter after prefix
-          enabled_letters[enabled_letters_count] = buf[user_search_length];
-          enabled_letters_count += 1;
+          // if prefix is whole address, we do not want \n
+          if ((int)strlen(buf) - 1 != user_search_length) {
+            enabled_letters[enabled_letters_count] = buf[user_search_length];
+            enabled_letters_count += 1;
+          }
         }
 
         prefix_matches += 1;
@@ -104,7 +125,7 @@ int main(int argc, char *argv[]) {
         strcpy(last_match, buf);
       }
     } else {
-      printf("Wrong number of arguments!");
+      printf("Wrong number of arguments!\n");
       return 1;
     }
   }
@@ -115,6 +136,7 @@ int main(int argc, char *argv[]) {
   } else if (argc != 2 || prefix_matches > 1) {
     printf("Enable: ");
     print_ordered_letters(enabled_letters, enabled_letters_count);
+    printf("\n");
     return 0;
   } else if (argc == 2 && prefix_matches == 0) {
     printf("Not found\n");

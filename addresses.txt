@@ -1,6 +1,4 @@
 Praha
-Kurim
-brno
-bratislava
-ostrava
-kourim
+Brno
+Bruntal
+Bratislava
