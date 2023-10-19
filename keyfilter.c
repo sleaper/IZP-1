@@ -13,6 +13,30 @@
 #define MAX_WORD 100 // 100 characters
 
 /**
+ * @brief Determine how many letters from user search are equal to buf
+ *
+ * @param user_search user search input
+ * @param user_search_length length of user search input
+ * @param buf buffer in which we search for letters
+ * @return int number representing how many letters from user_search were in buf
+ */
+int equal_letters(char *user_search, char user_search_length, char *buf) {
+  int equal_letters = 0;
+  for (int i = 0; i < user_search_length; i++) {
+    // Case insensitive user search
+    user_search[i] = toupper(user_search[i]);
+
+    if (user_search[i] == buf[i]) {
+      equal_letters += 1;
+    } else {
+      break;
+    }
+  }
+
+  return equal_letters;
+}
+
+/**
  * @brief Determine if new letter is inside of enabled_letters
  *
  * @param letter array in which we search for in the provided array
@@ -73,12 +97,6 @@ int is_valid_input(char *input) {
     return 0;
   }
 
-  for (int i = 0; input[i] != '\0'; i++) {
-    if (!isalpha(input[i])) {
-      printf("You can use only characters from alphabet!\n");
-      return 0;
-    }
-  }
   return 1;
 }
 
@@ -102,6 +120,13 @@ int main(int argc, char *argv[]) {
 
   char buf[MAX_LINE];
   while (fgets(buf, sizeof buf, stdin) != NULL) {
+
+    if (buf[sizeof buf - 2] != '\n' && buf[sizeof buf - 1] == '\0') {
+      printf("Max 100 character per line!\n");
+      return 1;
+    }
+
+    printf("TEST: %s\n", buf);
     // Case insensitive word
     capitalize_word(buf);
 
@@ -114,20 +139,9 @@ int main(int argc, char *argv[]) {
       }
     } else if (argc == 2) {
 
-      int equal_letters = 0;
-      for (int i = 0; i < user_search_length; i++) {
-        // Case insensitive user search
-        user_search[i] = toupper(user_search[i]);
-
-        if (user_search[i] == buf[i]) {
-          equal_letters += 1;
-        } else {
-          break;
-        }
-      }
-
       // Is prefix equal to user search?
-      if (equal_letters == user_search_length) {
+      if (equal_letters(user_search, user_search_length, buf) ==
+          user_search_length) {
         if (!is_letter_duplicit(buf[user_search_length], enabled_letters,
                                 enabled_letters_count)) {
 

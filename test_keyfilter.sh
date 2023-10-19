@@ -21,7 +21,7 @@ run_test() {
 
 	echo -n "Running test with input from $input_file and argument ${test_arg:0:10}... "
 
-		actual_output=$(./keyfilter $test_arg < $input_file)
+		actual_output=$(./keyfilter "$test_arg" < "$input_file")
 
 		if [[ "$actual_output" == "$expected_output" ]]; then
 			echo -e "${GREEN}PASSED${NC}"
@@ -76,12 +76,28 @@ run_test "test_02.txt" "bremen" "Found: BREMEN"
 
 run_test "test_02.txt" "p" "Enable: R"
 
-run_test "test_02.txt" "pr1h" "You can use only characters from alphabet!"
 run_test "test_02.txt" "TOHLEJETESTNASTOCHARAKTERUDLOUHEJRADEKJESTLINAHODOUJSITAMNEUDELALCHYBICKUFRAJEREJUSTASKINGYOUKNOWHEHaaaaaa" "100 characters is max!"
 
 echo -e "TohleJeTestNaStoCharakteruDlouhejRadekJestliNahodouJsiTamNeudelalChybickuFrajereJustAskingYouKnowHeh" > test_03.txt
 run_test "test_03.txt" "to" "Found: TOHLEJETESTNASTOCHARAKTERUDLOUHEJRADEKJESTLINAHODOUJSITAMNEUDELALCHYBICKUFRAJEREJUSTASKINGYOUKNOWHEH"
 
+echo -e " \n1praha\n1kurim\n3\n!\n:\n_\n;\n~\nA\nB\nc" > test_04.txt
+
+run_test "test_04.txt" "" "Enable:  !13:;ABC_~"
+run_test "test_04.txt" "1" "Enable: KP"
+
+#white spaces
+echo -e " \nBratislava\nBrno hl.n.\nBrno hl.aut.n\nBrno\nBruntal" > test_05.txt
+
+run_test "test_05.txt" "brno h" "Enable: L"
+run_test "test_05.txt" "brno hl." "Enable: AN"
+
+echo -e "TohleJeTestNaStoCharakteruDlouhejRadekJestliNahodouJsiTamNeudelalChybickuFrajereJustAskingYouKnowHehTesfdsfdsfdsfdsdsadsadsadsadsa\nPraha" > test_06.txt
+run_test "test_06.txt" "to" "Max 100 characters per line!"
+
+rm test_06.txt
+rm test_05.txt
+rm test_04.txt
 rm test_03.txt
 rm test_02.txt
 rm test_01.txt
