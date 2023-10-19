@@ -100,6 +100,22 @@ int is_valid_input(char *input) {
   return 1;
 }
 
+/**
+ * @brief Validates address
+ *
+ * @param address
+ * @return 1 (valid) or 0 (not valid)
+ */
+int is_valid_address(char *address) {
+  if (address[strlen(address) - 1] != '\n' &&
+      address[strlen(address)] == '\0') {
+    printf("Max 100 characters per address!\n");
+    return 0;
+  }
+
+  return 1;
+}
+
 int main(int argc, char *argv[]) {
   char user_search[MAX_LINE];
   int user_search_length = 0;
@@ -121,12 +137,10 @@ int main(int argc, char *argv[]) {
   char buf[MAX_LINE];
   while (fgets(buf, sizeof buf, stdin) != NULL) {
 
-    if (buf[sizeof buf - 2] != '\n' && buf[sizeof buf - 1] == '\0') {
-      printf("Max 100 character per line!\n");
+    if (!is_valid_address(buf)) {
       return 1;
     }
 
-    printf("TEST: %s\n", buf);
     // Case insensitive word
     capitalize_word(buf);
 
