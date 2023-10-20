@@ -2,6 +2,7 @@
  * @file keyfilter.c
  *
  * @author  Spac Petr <xspacpe00@stud.fit.vutbr.cz>
+ * @date 2023-10
  *
  */
 
@@ -93,7 +94,7 @@ void capitalize_word(char *buffer) {
  */
 int is_valid_input(char *input) {
   if (strlen(input) > MAX_WORD) {
-    printf("100 characters is max!\n");
+    fprintf(stderr, "Max 100 characters per address!\n");
     return 0;
   }
 
@@ -109,7 +110,7 @@ int is_valid_input(char *input) {
 int is_valid_address(char *address) {
   if (address[strlen(address) - 1] != '\n' &&
       address[strlen(address)] == '\0') {
-    printf("Max 100 characters per address!\n");
+    fprintf(stderr, "Max 100 characters per address!\n");
     return 0;
   }
 
@@ -172,7 +173,7 @@ int main(int argc, char *argv[]) {
         strcpy(last_match, buf);
       }
     } else {
-      printf("Wrong number of arguments!\n");
+      fprintf(stderr, "Wrong number of arguments!\n");
       return 1;
     }
   }

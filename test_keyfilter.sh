@@ -93,7 +93,7 @@ run_test "test_05.txt" "brno h" "Enable: L"
 run_test "test_05.txt" "brno hl." "Enable: AN"
 
 echo -e "TohleJeTestNaStoCharakteruDlouhejRadekJestliNahodouJsiTamNeudelalChybickuFrajereJustAskingYouKnowHehTesfdsfdsfdsfdsdsadsadsadsadsa\nPraha" > test_06.txt
-run_test "test_06.txt" "to" "Max 100 characters per line!"
+run_test "test_06.txt" "to" "Max 100 characters per address!"
 
 rm test_06.txt
 rm test_05.txt
