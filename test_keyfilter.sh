@@ -21,7 +21,7 @@ run_test() {
 
 	echo -n "Running test with input from $input_file and argument ${test_arg:0:10}... "
 
-		actual_output=$(./keyfilter "$test_arg" < "$input_file")
+		actual_output=$(./keyfilter "$test_arg" < "$input_file" 2>&1)
 
 		if [[ "$actual_output" == "$expected_output" ]]; then
 			echo -e "${GREEN}PASSED${NC}"
@@ -76,7 +76,7 @@ run_test "test_02.txt" "bremen" "Found: BREMEN"
 
 run_test "test_02.txt" "p" "Enable: R"
 
-run_test "test_02.txt" "TOHLEJETESTNASTOCHARAKTERUDLOUHEJRADEKJESTLINAHODOUJSITAMNEUDELALCHYBICKUFRAJEREJUSTASKINGYOUKNOWHEHaaaaaa" "100 characters is max!"
+run_test "test_02.txt" "TOHLEJETESTNASTOCHARAKTERUDLOUHEJRADEKJESTLINAHODOUJSITAMNEUDELALCHYBICKUFRAJEREJUSTASKINGYOUKNOWHEHaaaaaa" "Max 100 characters per address!"
 
 echo -e "TohleJeTestNaStoCharakteruDlouhejRadekJestliNahodouJsiTamNeudelalChybickuFrajereJustAskingYouKnowHeh" > test_03.txt
 run_test "test_03.txt" "to" "Found: TOHLEJETESTNASTOCHARAKTERUDLOUHEJRADEKJESTLINAHODOUJSITAMNEUDELALCHYBICKUFRAJEREJUSTASKINGYOUKNOWHEH"
