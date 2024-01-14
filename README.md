@@ -1,1 +1,1 @@
-# IZP-priject1
+# IZP-project1
